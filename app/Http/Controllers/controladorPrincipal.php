@@ -11,10 +11,11 @@ class controladorPrincipal extends Controller {
      * @param Request $req
      * @return type
      */
-    public function RegistrarCuenta(Request $req) {
+    public function registrarCuenta(Request $req) {
         $nombre = $req->get('nombre');
         $correo = $req->get('correo');
         $pass = $req->get('pass');
+        $pass = password_hash($pass, PASSWORD_DEFAULT);
         $activo = 0;
         
         \DB::insert('INSERT INTO usuarios VALUES(id,?,?,?,?)', [$nombre, $correo, $pass, $activo]);
@@ -24,6 +25,13 @@ class controladorPrincipal extends Controller {
         ];
         
         Return view('inicio', $datos);
+    }
+    
+    public function iniciarSesion(Request $req) {
+        $correo = $req->get('correo');
+        $pass = $req->get('pass');
+        
+        //\DB::select('SELECT * FROM usuarios WHERE correo=?')
     }
 
 }

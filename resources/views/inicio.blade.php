@@ -13,6 +13,10 @@
     <body>
         <?php
         echo 'Hola!';
+
+        if (isset($mensaje)) {
+            echo '<br>' . $mensaje . '<br>';
+        }
         ?>
         <a href="registro">Registrarse</a>
     </body>
