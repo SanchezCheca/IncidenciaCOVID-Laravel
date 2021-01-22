@@ -6,10 +6,24 @@ use Illuminate\Http\Request;
 
 class controladorPrincipal extends Controller {
 
-    public function inicioSesion(Request $req) {
+    /**
+     * Inserta una cuenta
+     * @param Request $req
+     * @return type
+     */
+    public function RegistrarCuenta(Request $req) {
+        $nombre = $req->get('nombre');
         $correo = $req->get('correo');
         $pass = $req->get('pass');
+        $activo = 0;
         
+        \DB::insert('INSERT INTO usuarios VALUES(id,?,?,?,?)', [$nombre, $correo, $pass, $activo]);
+        
+        $datos = [
+            'mensaje' => 'Se ha insertado un usuario'
+        ];
+        
+        Return view('inicio', $datos);
     }
 
 }
