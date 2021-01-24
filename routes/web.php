@@ -11,4 +11,12 @@ Route::get('registro', function () {
     return view('registro');
 });
 
+Route::get('login', function () {
+    return view('inicioSesion');
+});
+
+Route::get('cerrarSesion', [controladorPrincipal::class, 'cerrarSesion']);
+
 Route::post('formularioRegistro',[controladorPrincipal::class, 'registrarCuenta']);
+
+Route::post('inicioSesion', [controladorPrincipal::class, 'iniciarSesion']);

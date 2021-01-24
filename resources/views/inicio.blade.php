@@ -12,12 +12,25 @@
     </head>
     <body>
         <?php
+        use App\Models\Usuario;
+        ?>
+        
+        <?php
         echo 'Hola!';
 
         if (isset($mensaje)) {
             echo '<br>' . $mensaje . '<br>';
         }
+
+        if (session()->get('usuarioIniciado') != null) {
+            $usuarioIniciado = session()->get('usuarioIniciado');
+            echo '<br>Recogido de sesión: ' . $usuarioIniciado->getNombre() . '<br>';
+        }
         ?>
         <a href="registro">Registrarse</a>
+        <br>
+        <a href="login">Iniciar sesión</a>
+        <br>
+        <a href="cerrarSesion">Cerrar sesión</a>
     </body>
 </html>
