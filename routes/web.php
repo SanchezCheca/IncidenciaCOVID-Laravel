@@ -28,5 +28,10 @@ Route::get('crearInforme', [controladorPrincipal::class, 'irACrearInforme']);
 
 Route::get('administrarUsuarios', [controladorCRUD::class, 'irAAdministrarUsuarios']);
 
-//-----------------------------------RUTAS DENTRO DEL CRUD DE USUARIOS
 Route::post('actualizarUsuario', [App\Http\Controllers\controladorCRUD::class, 'actualizarUsuario']);
+
+Route::get('administrarRegiones', [controladorCRUD::class, 'irAAdministrarRegiones']);
+
+Route::post('actualizarRegion', [controladorCRUD::class, 'actualizarRegion']);
+
+Route::post('crearRegion', [controladorCRUD::class, 'crearRegion']);

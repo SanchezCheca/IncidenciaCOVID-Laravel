@@ -39,6 +39,8 @@
                 <br>
                 <a href="administrarUsuarios">Administrar usuarios</a>
                 <br>
+                <a href="administrarRegiones">Administrar regiones</a>
+                <br>
                 <?php
                 if (isset($mensaje)) {
                     echo $mensaje . '<br>';

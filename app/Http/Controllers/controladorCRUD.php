@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use App\Models\Region;
 
 class controladorCRUD extends Controller {
+    //------------------------------ ADMINISTRACIÓN DE USUARIOS
 
     /**
      * Carga todos los usuarios y los manda a la vista 'crud'
@@ -27,6 +29,12 @@ class controladorCRUD extends Controller {
                 ];
                 Return view('inicio', $datos);
             }
+        } else {
+            $mensaje = 'Ha ocurrido algún error.';
+            $datos = [
+                'mensaje' => $mensaje
+            ];
+            Return view('inicio', $datos);
         }
     }
 
@@ -36,6 +44,9 @@ class controladorCRUD extends Controller {
      */
     public function actualizarUsuario(Request $req) {
         if ($req->has('actualizarUsuario')) {
+            /**
+             * ACTUALIZA LOS DATOS DE UN USUARIO
+             */
             if (session()->has('usuarioIniciado')) {
                 $usu = session()->get('usuarioIniciado');
 
@@ -117,6 +128,19 @@ class controladorCRUD extends Controller {
                 ];
                 Return view('inicio', $datos);
             }
+        } else if ($req->has('eliminarUsuario')) {
+            /**
+             * ELIMINA UN USUARIO
+             */
+            $id = $req->get('id');
+            \DB::delete('DELETE FROM usuarios WHERE id=?', [$id]);
+            $mensaje = 'Se ha eliminado al usuario con id ' . $id;
+            $conj_usuarios = $this->getAllUsers();
+            $datos = [
+                'mensaje' => $mensaje,
+                'conj_usuarios' => $conj_usuarios
+            ];
+            Return view('crud', $datos);
         } else {
             $mensaje = 'Ha ocurrido algún error (500)';
             $conj_usuarios = $this->getAllUsers();
@@ -125,6 +149,87 @@ class controladorCRUD extends Controller {
                 'conj_usuarios' => $conj_usuarios
             ];
             Return view('crud', $datos);
+        }
+    }
+
+    //------------------------------ ADMINISTRACIÓN DE REGIONES
+
+    /**
+     * Carga todas las regiones y va a la vista 'regiones'
+     */
+    public function irAAdministrarRegiones() {
+        if (session()->has('usuarioIniciado')) {
+            $usu = session()->get('usuarioIniciado');
+            if ($usu->isAdmin()) {
+                $regiones = $this->getAllRegiones();
+                $datos = [
+                    'regiones' => $regiones
+                ];
+                Return view('regiones', $datos);
+            } else {
+                $mensaje = 'No tienes permiso para acceder aqui';
+                $datos = [
+                    'mensaje' => $mensaje
+                ];
+                Return view('inicio', $datos);
+            }
+        } else {
+            $mensaje = 'Ha ocurrido alǵun error';
+            $datos = [
+                'mensaje' => $mensaje
+            ];
+            Return view('inicio', $datos);
+        }
+    }
+
+    /**
+     * Crea una región
+     * @param Request $req
+     */
+    public function crearRegion(Request $req) {
+        $nombre = $req->get('nombre');
+        \DB::insert('INSERT INTO regiones VALUES(id, ?)', [$nombre]);
+        $mensaje = 'Se ha insertado la región "' . $nombre . '".';
+        $regiones = $this->getAllRegiones();
+        $datos = [
+            'mensaje' => $mensaje,
+            'regiones' => $regiones
+        ];
+        Return view('regiones', $datos);
+    }
+
+    /**
+     * Actualiza o elimina una región
+     * @param Request $req
+     */
+    public function actualizarRegion(Request $req) {
+        if ($req->has('actualizarRegion')) {
+            $id = $req->get('id');
+            $nombre = $req->get('nombre');
+            \DB::update('UPDATE regiones SET nombre=? WHERE id=?', [$nombre, $id]);
+            $mensaje = 'Se ha actualizado la región "' . $nombre . '"';
+            $regiones = $this->getAllRegiones();
+            $datos = [
+                'mensaje' => $mensaje,
+                'regiones' => $regiones
+            ];
+            Return view('regiones', $datos);
+        } else if ($req->has('eliminarRegion')) {
+            $id = $req->get('id');
+            \DB::delete('DELETE FROM regiones WHERE id=?', [$id]);
+            $mensaje = 'Se ha ELIMINADO la región';
+            $regiones = $this->getAllRegiones();
+            $datos = [
+                'mensaje' => $mensaje,
+                'regiones' => $regiones
+            ];
+            Return view('regiones', $datos);
+        } else {
+            $mensaje = 'Ha ocurrido alǵun error';
+            $datos = [
+                'mensaje' => $mensaje
+            ];
+            Return view('inicio', $datos);
         }
     }
 
@@ -190,6 +295,18 @@ class controladorCRUD extends Controller {
             $correo = $datos->correo;
         }
         return $correo;
+    }
+
+    /**
+     * Devuelve todas las regiones
+     */
+    private function getAllRegiones() {
+        $consulta = \DB::select('SELECT * FROM regiones');
+        $regiones = [];
+        foreach ($consulta as $region) {
+            $regiones[] = new Region($region->id, $region->nombre);
+        }
+        return $regiones;
     }
 
 }

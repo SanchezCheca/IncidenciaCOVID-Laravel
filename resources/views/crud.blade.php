@@ -80,7 +80,6 @@
                                 <?php
                             }
                         } else {
-                            $_SESSION['mensaje'] = 'Ha ocurrido algún error.';
                             header('Location: ../index.php');
                         }
                         ?>
