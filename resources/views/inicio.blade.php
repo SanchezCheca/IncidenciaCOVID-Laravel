@@ -37,6 +37,8 @@
                 <br>
                 <a href="crearInforme">Crear informe</a>
                 <br>
+                <a href="administrarUsuarios">Administrar usuarios</a>
+                <br>
                 <?php
                 if (isset($mensaje)) {
                     echo $mensaje . '<br>';

@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Usuario extends Model {
+class Usuario {
 
     //--------------------ATRIBUTOS
     private $id;
@@ -20,7 +19,7 @@ class Usuario extends Model {
         $this->nombre = $nombre;
         $this->correo = $correo;
         $this->activo = $activo;
-        $this->x = $roles;
+        $this->roles = $roles;
     }
 
     //--------------------MÉTODOS PÚBLICOS

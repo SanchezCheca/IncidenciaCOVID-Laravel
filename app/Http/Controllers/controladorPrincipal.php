@@ -61,7 +61,7 @@ class controladorPrincipal extends Controller {
             $activo = $r->activo;
 
             $roles = \DB::select('SELECT idRol FROM usuario_rol WHERE idUsuario=?', [$id]);
-            $rolesUsuario = null;
+            $rolesUsuario = [];
             foreach ($roles as $rol) {
                 $rolesUsuario[] = $rol->idRol;
             }
@@ -91,7 +91,7 @@ class controladorPrincipal extends Controller {
      * @return type
      */
     public function cerrarSesion() {
-        session()->remove('usuarioIniciado');
+        session()->forget('usuarioIniciado');
         $mensaje = 'Has cerrado la sesión';
 
         $datos = [
@@ -108,8 +108,9 @@ class controladorPrincipal extends Controller {
     public function irACrearInforme() {
         if (session()->has('usuarioIniciado')) {
             $usu = session()->get('usuarioIniciado');
+            
             if ($usu->isAutor()) {
-                $consulta = \DB::select('SELECT * FROM informes');
+                $consulta = \DB::select('SELECT * FROM regiones');
                 $regiones = [];
                 foreach ($consulta as $region) {
                     $id = $region->id;
@@ -122,7 +123,8 @@ class controladorPrincipal extends Controller {
                 Return view('crearInforme', $datos);
             } else {
                 $datos = [
-                    'mensaje' => 'No tienes permiso para acceder a esa página'
+                    'mensaje' => 'No tienes permiso para acceder a esa página',
+                    'usuarioIniciado' => $usu
                 ];
                 Return view('inicio', $datos);
             }
@@ -133,5 +135,11 @@ class controladorPrincipal extends Controller {
             Return view('inicio', $datos);
         }
     }
+    
+    
+    
+    //------------------------------------------------------ MÉTODOS PRIVADOS
+    
+    
 
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\controladorPrincipal;
+use App\Http\Controllers\controladorCRUD;
 
 Route::get('/', function () {
     return view('inicio');
@@ -24,3 +25,8 @@ Route::post('formularioRegistro',[controladorPrincipal::class, 'registrarCuenta'
 Route::post('inicioSesion', [controladorPrincipal::class, 'iniciarSesion']);
 
 Route::get('crearInforme', [controladorPrincipal::class, 'irACrearInforme']);
+
+Route::get('administrarUsuarios', [controladorCRUD::class, 'irAAdministrarUsuarios']);
+
+//-----------------------------------RUTAS DENTRO DEL CRUD DE USUARIOS
+Route::post('actualizarUsuario', [App\Http\Controllers\controladorCRUD::class, 'actualizarUsuario']);
