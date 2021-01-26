@@ -85,12 +85,37 @@ class controladorInformes extends Controller {
      */
     public function verInforme(Request $req) {
         $id = $req->get('id');
+        $datos = $this->cargarParaVerInforme($id);
+        Return view('verInforme', $datos);
+    }
+    
+    /**
+     * Actualiza los datos de un informe
+     * @param Request $req
+     */
+    public function editarInforme(Request $req) {
+        $id = $req->get('id');
+        $nInfectados = $req->get('nInfectados');
+        $nFallecidos = $req->get('nFallecidos');
+        $nAltas = $req->get('nAltas');
+        
+        \DB::update('UPDATE informes SET nInfectados=?, nFallecidos=?, nAltas=? WHERE id=?', [$nInfectados, $nFallecidos, $nAltas, $id]);
+        $mensaje = 'Se ha actualizado el informe con id ' . $id;
+        $datos = $this->cargarParaVerInforme($id);
+        $datos += [
+            'mensaje' => $mensaje
+        ];
+        Return view('verInforme', $datos);
+    }
+
+    //--------------------------------------------------MÉTODOS PRIVADOS
+    private function cargarParaVerInforme($id) {
         //Recupera el informe completo
         $consulta = \DB::select('SELECT * FROM informes WHERE id=?', [$id]);
         $informe;
         foreach ($consulta as $datos) {
             $semana = $datos->semana;
-            $idRegion = $datos->semana;
+            $idRegion = $datos->region;
             $nInfectados = $datos->nInfectados;
             $nFallecidos = $datos->nFallecidos;
             $nAltas = $datos->nAltas;
@@ -99,9 +124,7 @@ class controladorInformes extends Controller {
             //Recupera el nombre de la región
             $consultaNombreRegion = \DB::select('SELECT nombre FROM regiones WHERE id=?', [$idRegion]);
             $nombreRegion;
-            foreach ($consultaNombreRegion as $nombre) {
-                $nombreRegion = $nombre->nombre;
-            }
+            $nombreRegion = $consultaNombreRegion[0]->nombre;
             
             $informe = new Informe($id, $semana, $nombreRegion, $nInfectados, $nFallecidos, $nAltas, $idAutor);
         }
@@ -117,10 +140,14 @@ class controladorInformes extends Controller {
             'informe' => $informe,
             'nombreAutor' => $nombreAutor
         ];
-        Return view('verInforme', $datos);
+        
+        if (session()->has('usuarioIniciado')) {
+            $usuarioIniciado = session()->get('usuarioIniciado');
+            $datos += ['usuarioIniciado' => $usuarioIniciado];
+        }
+        return $datos;
     }
-
-    //--------------------------------------------------MÉTODOS PRIVADOS
+    
     private function cargarRegiones() {
         $consulta = \DB::select('SELECT * FROM regiones');
         $regiones = [];
