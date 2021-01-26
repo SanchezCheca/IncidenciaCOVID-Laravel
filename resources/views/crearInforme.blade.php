@@ -34,7 +34,7 @@
 
                 <!-- Cuerpo -->
                 <div class="col-12 mt-4 px-4 d-flex justify-content-center">
-                    <form class="w-75" name="formularioNuevoInforme" action="../controladores/controladorInformes.php" method="POST">
+                    <form class="w-75" name="formularioNuevoInforme" action="formularioNuevoInforme" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="semana">Semana</label>
@@ -55,7 +55,7 @@
                                 <?php
                                 if (isset($regiones)) {
                                     foreach ($regiones as $region) {
-                                        echo '<option value="' . $region->getNombre() . '">' . $region->getNombre() . '</option>';
+                                        echo '<option value="' . $region->getId() . '">' . $region->getNombre() . '</option>';
                                     }
                                 }
                                 ?>

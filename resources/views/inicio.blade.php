@@ -28,6 +28,8 @@
 
                 //Carga las clases necesarias
                 use App\Models\Usuario;
+                use App\Models\Informe;
+                use App\Models\Region;
                 ?>
 
 
@@ -78,6 +80,25 @@
 
                     $informes = $informesFiltrados;
                 }
+
+//Calcula los datos totales
+                $infectados = 0;
+                $fallecidos = 0;
+                $altas = 0;
+
+                if (isset($informes) && is_array($informes)) {
+                    for ($i = 0; $i < sizeof($informes); $i++) {
+                        $infectados += $informes[$i]->getNInfectados();
+                        $fallecidos += $informes[$i]->getNFallecidos();
+                        $altas += $informes[$i]->getNAltas();
+                    }
+                } else {
+                    ?>
+                    <div class="col-12 d-flex justify-content-center">
+                        <p class="text-danger mt-4">No hay informes que coincidan con tu búsqueda.</p>
+                    </div>
+                    <?php
+                }
                 ?>
 
                 <!-- Filtro -->
@@ -85,17 +106,46 @@
                     <h5 class="h5">Filtrar por:</h5>
                 </div>
                 <div class="col-8 mt-4">
-                    <form name="filtro" action="index.php" method="POST">
+                    <form name="filtro" action="inicio" method="POST">
+                        {{ csrf_field() }}
                         <div class="form-group">
                             <label for="filtroRegion">Región: </label>
                             <select class="form-control" name="filtroRegion">
                                 <option value="TODAS">TODAS</option>
-
+                                <?php
+                                if (isset($regiones)) {
+                                    foreach ($regiones as $region) {
+                                        ?>
+                                        <option value="<?php
+                                        echo $region->getNombre();
+                                        ?>"<?php
+                                                if (isset($filtroRegion) && $filtroRegion == $region->getNombre()) {
+                                                    echo 'selected';
+                                                }
+                                                ?>><?php echo $region->getNombre(); ?></option>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
                             </select>
                             <label for="filtroSemana">Semana: </label>
                             <select class="form-control" name="filtroSemana">
                                 <option value="TODAS">TODAS</option>
-
+                                <?php
+                                if (isset($semanas)) {
+                                    foreach ($semanas as $semana) {
+                                        ?>
+                                        <option value="<?php
+                                        echo $semana;
+                                        ?>"<?php
+                                                if (isset($filtroSemana) && $filtroSemana == $semana) {
+                                                    echo 'selected';
+                                                }
+                                                ?>><?php echo $semana; ?></option>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
                             </select>
                         </div>
 
@@ -124,7 +174,9 @@
                         </thead>
                         <tbody>
                             <tr>
-
+                                <td><?php echo $infectados; ?></td>
+                                <td><?php echo $fallecidos; ?></td>
+                                <td><?php echo $altas; ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -146,7 +198,25 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            <?php
+                            if (isset($informes) && is_array($informes)) {
+                                for ($i = 0; $i < sizeof($informes); $i++) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $informes[$i]->getSemana(); ?></td>
+                                        <td><?php echo $informes[$i]->getRegion(); ?></td>
+                                        <td>
+                                            <form name="verInforme" action="verInforme" method="POST">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="id" value="<?php echo $informes[$i]->getId(); ?>">
+                                                <input type="submit" class="btn btn-primary" name="verInforme" value="Ver informe">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>

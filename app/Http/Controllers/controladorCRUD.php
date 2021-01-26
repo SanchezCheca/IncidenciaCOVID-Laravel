@@ -207,6 +207,7 @@ class controladorCRUD extends Controller {
             $id = $req->get('id');
             $nombre = $req->get('nombre');
             \DB::update('UPDATE regiones SET nombre=? WHERE id=?', [$nombre, $id]);
+            
             $mensaje = 'Se ha actualizado la región "' . $nombre . '"';
             $regiones = $this->getAllRegiones();
             $datos = [
@@ -217,6 +218,7 @@ class controladorCRUD extends Controller {
         } else if ($req->has('eliminarRegion')) {
             $id = $req->get('id');
             \DB::delete('DELETE FROM regiones WHERE id=?', [$id]);
+            \DB::update('UPDATE informes SET region=0 WHERE region=?', [$id]);
             $mensaje = 'Se ha ELIMINADO la región';
             $regiones = $this->getAllRegiones();
             $datos = [
