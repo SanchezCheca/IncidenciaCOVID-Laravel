@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="UTF-8">
-        <title>Crear informe - inCOVID</title>
+        <title>Informe de incidencia - inCOVID</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -22,6 +22,7 @@
     <body>
         <div class="container-fluid d-flex justify-content-center">
             <div class="row principal rounded">
+                @include('cabecera')
                 <?php
                 use App\Models\Informe;
                 //Comprueba si se está editando el informe para mostrar la vista adecuada
@@ -129,7 +130,7 @@
                     <?php
                 }
                 ?>
-                    
+            @include('footer')
             </div>
         </div>        
     </body>

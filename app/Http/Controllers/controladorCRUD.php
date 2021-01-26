@@ -19,7 +19,8 @@ class controladorCRUD extends Controller {
             if ($usu->isAdmin()) {
                 $conj_usuarios = $this->getAllUsers();
                 $datos = [
-                    'conj_usuarios' => $conj_usuarios
+                    'conj_usuarios' => $conj_usuarios,
+                    'usuarioIniciado' => $usu
                 ];
                 Return view('crud', $datos);
             } else {
@@ -163,7 +164,8 @@ class controladorCRUD extends Controller {
             if ($usu->isAdmin()) {
                 $regiones = $this->getAllRegiones();
                 $datos = [
-                    'regiones' => $regiones
+                    'regiones' => $regiones,
+                    'usuarioIniciado' => $usu
                 ];
                 Return view('regiones', $datos);
             } else {

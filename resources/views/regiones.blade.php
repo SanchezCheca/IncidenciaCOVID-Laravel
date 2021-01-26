@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Administrar usuarios - inCOVID</title>
+        <title>Administrar regiones - inCOVID</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -22,6 +22,7 @@
     <body>        
         <div class="container-fluid d-flex justify-content-center">
             <div class="row principal rounded">
+                @include('cabecera')
 
                 <!-- Título de la sección -->
                 <div class="col-12 mt-4 ml-4">
@@ -82,7 +83,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                @include('footer')
             </div>
         </div>
     </body>

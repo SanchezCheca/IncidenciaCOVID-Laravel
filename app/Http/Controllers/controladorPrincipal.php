@@ -59,13 +59,20 @@ class controladorPrincipal extends Controller {
         //Comprueba la contraseña y guarda todos los datos
         $datos = $this->cargarDatos();
         if (password_verify($pass, $passEncriptada)) {
-            $usuarioIniciado = new Usuario($id, $nombre, $correo, $activo, $rolesUsuario);
-            session()->put('usuarioIniciado', $usuarioIniciado);
-            $mensaje = 'Has iniciado sesión como ' . $nombre;
-            $datos += [
-                'usuarioIniciado' => $usuarioIniciado,
-                'mensaje' => $mensaje
-            ];
+            if ($activo == 0) {
+                $mensaje = 'Tu cuenta aún no ha sido activada, debes esperar a que la active un administrador.';
+                $datos += [
+                    'mensaje' => $mensaje
+                ];
+            } else {
+                $usuarioIniciado = new Usuario($id, $nombre, $correo, $activo, $rolesUsuario);
+                session()->put('usuarioIniciado', $usuarioIniciado);
+                $mensaje = 'Has iniciado sesión como ' . $nombre;
+                $datos += [
+                    'usuarioIniciado' => $usuarioIniciado,
+                    'mensaje' => $mensaje
+                ];
+            }
         } else {
             $mensaje = 'ERROR: Correo y/o contraseña incorrectos';
             $datos += [
@@ -88,7 +95,7 @@ class controladorPrincipal extends Controller {
 
         Return view('inicio', $datos);
     }
- 
+
     /**
      * Devuelve un vector con los informes registrados y también el usuario iniciado de haberlo
      */
@@ -96,8 +103,9 @@ class controladorPrincipal extends Controller {
         $datos = $this->cargarDatos();
         Return view('inicio', $datos);
     }
-    
+
     //--------------------------------------------------------MÉTODOS PRIVADOS
+
     /**
      * Carga informes, regiones, semanas y al usuario iniciado (de haberlo)
      */
@@ -105,12 +113,12 @@ class controladorPrincipal extends Controller {
         //Carga los informes
         $consulta = \DB::select('SELECT * FROM informes');
         $informes = [];
-        foreach($consulta as $informe) {
+        foreach ($consulta as $informe) {
             $id = $informe->id;
             $semana = $informe->semana;
             $consultaRegion = \DB::select('SELECT nombre FROM regiones WHERE id=?', [$informe->region]);
             $region = '';
-            foreach($consultaRegion as $posibilidad) {
+            foreach ($consultaRegion as $posibilidad) {
                 $region = $posibilidad->nombre;
             }
             $nInfectados = $informe->nInfectados;
@@ -119,21 +127,21 @@ class controladorPrincipal extends Controller {
             $idAutor = $informe->idautor;
             $informes[] = new Informe($id, $semana, $region, $nInfectados, $nFallecidos, $nAltas, $idAutor);
         }
-        
+
         //Carga las regiones
         $consulta = \DB::select('SELECT * FROM regiones WHERE id IN (SELECT region FROM informes)');
         $regiones = [];
-        foreach($consulta as $region) {
+        foreach ($consulta as $region) {
             $regiones[] = new Region($region->id, $region->nombre);
         }
-        
+
         //Carga las semanas
         $consulta = \DB::select('SELECT semana FROM informes');
         $semanas = [];
-        foreach($consulta as $semana) {
+        foreach ($consulta as $semana) {
             $semanas[] = $semana->semana;
         }
-        
+
         //Manda datos y devuelve
         $datos = [];
         if (session()->has('usuarioIniciado')) {
