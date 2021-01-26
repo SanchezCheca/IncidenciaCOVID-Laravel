@@ -46,7 +46,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <form name="editarInforme" action="verInforme" method="POST">
+                            <form name="editarInforme" action="editarInforme" method="POST">
+                                {{ csrf_field() }}
                                 <?php
                                 if (isset($informe) && isset($nombreAutor)) {
                                     ?>
@@ -59,7 +60,7 @@
                                     <input type="hidden" name="id" value="<?php echo $informe->getId(); ?>">
                                     <td><input type="submit" name="actualizarInforme" value="Guardar" class="btn btn-success"></td>
                                 </form>
-                                <td><a href="verInforme"><button class="btn btn-warning">Cancelar</button></a></td>
+                                <td><a href="inicio"><button class="btn btn-warning">Cancelar</button></a></td>
                                 </tr>
                                 <?php
                             } else {
@@ -116,7 +117,9 @@
                     if (isset($usuarioIniciado) && $usuarioIniciado->isAutor()) {
                         ?>
                         <div class="col-12 d-flex justify-content-center">
-                            <form name="editar" action="verInforme.php" method="POST">
+                            <form name="editar" action="verInforme" method="POST">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="id" value="<?php echo $informe->getId(); ?>">
                                 <input type="submit" class="btn btn-secondary" name="editarInforme" value="EDITAR">
                             </form>
                         </div>

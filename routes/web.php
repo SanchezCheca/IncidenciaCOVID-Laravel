@@ -37,6 +37,10 @@ Route::post('formularioNuevoInforme', [controladorInformes::class, 'crearInforme
 
 Route::post('verInforme', [controladorInformes::class, 'verInforme']);
 
+Route::get('verInforme', [controladorInformes::class, 'verInforme']);
+
+Route::post('editarInforme', [controladorInformes::class, 'editarInforme']);
+
 //-----USUARIOS
 Route::get('administrarUsuarios', [controladorCRUD::class, 'irAAdministrarUsuarios']);
 
