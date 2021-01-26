@@ -22,11 +22,8 @@
     <body>
         <div class="container-fluid d-flex justify-content-center">
             <div class="row principal rounded">
-
-                <?php 
-                //include '../recursos/cabecera.php';
-                ?>
-
+                @include('cabecera')
+                
                 <!-- Título de la sección -->
                 <div class="col-12 mt-4 ml-4">
                     <h4 class="h4">Panel de administrador: Usuarios</h4>
@@ -86,10 +83,8 @@
                         </tbody>
                     </table>
                 </div>
-                
-                <?php //include '../recursos/footer.php'; ?>
+                @include('footer')
             </div>
-
         </div>
     </body>
 </html>

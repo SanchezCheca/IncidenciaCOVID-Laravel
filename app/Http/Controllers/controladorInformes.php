@@ -19,7 +19,8 @@ class controladorInformes extends Controller {
             if ($usu->isAutor()) {
                 $regiones = $this->cargarRegiones();
                 $datos = [
-                    'regiones' => $regiones
+                    'regiones' => $regiones,
+                    'usuarioIniciado' => $usu
                 ];
                 Return view('crearInforme', $datos);
             } else {

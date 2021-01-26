@@ -25,6 +25,8 @@ Route::get('inicio', [controladorPrincipal::class, 'cargarInicio']);
 
 Route::get('cerrarSesion', [controladorPrincipal::class, 'cerrarSesion']);
 
+Route::post('cerrarSesion', [controladorPrincipal::class, 'cerrarSesion']);
+
 Route::post('formularioRegistro', [controladorPrincipal::class, 'registrarCuenta']);
 
 Route::post('inicioSesion', [controladorPrincipal::class, 'iniciarSesion']);
@@ -44,10 +46,14 @@ Route::post('editarInforme', [controladorInformes::class, 'editarInforme']);
 //-----USUARIOS
 Route::get('administrarUsuarios', [controladorCRUD::class, 'irAAdministrarUsuarios']);
 
+Route::post('administrarUsuarios', [controladorCRUD::class, 'irAAdministrarUsuarios']);
+
 Route::post('actualizarUsuario', [App\Http\Controllers\controladorCRUD::class, 'actualizarUsuario']);
 
 //----REGIONES
 Route::get('administrarRegiones', [controladorCRUD::class, 'irAAdministrarRegiones']);
+
+Route::post('administrarRegiones', [controladorCRUD::class, 'irAAdministrarRegiones']);
 
 Route::post('actualizarRegion', [controladorCRUD::class, 'actualizarRegion']);
 

@@ -26,7 +26,7 @@
         ?>
         <div class="containter d-flex justify-content-center">
             <div class="row principal rounded">
-
+                @include('cabecera')
                 <!-- Título de la sección -->
                 <div class="col-12 mt-4 ml-4">
                     <h3 class="h3">Nuevo informe</h3>
@@ -79,6 +79,7 @@
                 <div class="col-12 d-flex justify-content-center mt-3">
                     <p><a href="inicio">Volver</a></p>
                 </div>
+                @include('footer')
             </div>
         </div>
     </body>

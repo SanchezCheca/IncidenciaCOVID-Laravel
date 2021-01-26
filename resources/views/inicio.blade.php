@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="UTF-8">
-        <title>Inicio1 - inCOVID</title>
+        <title>Inicio - inCOVID</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -22,49 +22,11 @@
     <body>
         <div class="containter d-flex justify-content-center">
             <div class="row principal rounded">
-
                 <!-------------------- CABECERA -------------------->
-                <?php
-
-                //Carga las clases necesarias
-                use App\Models\Usuario;
-                use App\Models\Informe;
-                use App\Models\Region;
-                ?>
-
-
-                <a href="login">Iniciar sesión</a>
-                <br>
-                <a href="cerrarSesion">Cerrar sesión</a>
-                <br>
-                <a href="crearInforme">Crear informe</a>
-                <br>
-                <a href="administrarUsuarios">Administrar usuarios</a>
-                <br>
-                <a href="administrarRegiones">Administrar regiones</a>
-                <br>
-                <?php
-                if (isset($mensaje)) {
-                    echo $mensaje . '<br>';
-                }
-
-                if (isset($usuarioIniciado)) {
-                    echo 'Hola, ' . $usuarioIniciado->getNombre() . '<br>';
-                    echo 'ID: ' . $usuarioIniciado->getId() . '<br>';
-                    if (is_array($usuarioIniciado->getRoles())) {
-                        foreach ($usuarioIniciado->getRoles() as $rol) {
-                            echo 'Rol de usuario: ' . $rol . '<br>';
-                        }
-                    } else {
-                        echo 'No roles?<br>';
-                    }
-                }
-                ?>
-
-
-
-
-
+                @include('cabecera')
+                
+                
+                
                 <?php
                 if (isset($_REQUEST['filtrar'])) {
                     $filtroRegion = $_REQUEST['filtroRegion'];
@@ -220,11 +182,8 @@
                         </tbody>
                     </table>
                 </div>
-
+                @include('footer')
             </div>
-
         </div>
-
-
     </body>
 </html>
